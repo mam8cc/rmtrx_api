@@ -34,6 +34,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bson (~> 1.9.2)
   mongo (~> 1.9.2)
   mongoid (~> 3.1.4)
   sinatra (~> 1.4.3)
