@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'mongoid'
 
+Mongoid.load!("mongoid.yml")
+
 #Allows for testing from a Chrome Extension HTTP
 set :protection, :origin_whitelist => ['chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo']
 
