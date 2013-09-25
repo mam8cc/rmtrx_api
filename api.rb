@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'mongoid'
-require 'bson_ext'
 
 get '/' do
   "Hello, world"
