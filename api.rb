@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'mongoid'
+require 'json'
 
 Mongoid.load!("mongoid.yml")
 
@@ -7,29 +8,22 @@ class ApiAuthenticator
 	def createKey
 		@key = SecureRandom.uuid;
 
-		Key.create(
+		keyObject = Key.create(
 			key: @key
 		)
 
-		return @key
+		return keyObject
+	end
+
+	def isKeyValid(key)
+		 return Key.where(key: key).exists?
 	end
 end
-
 
 auth = ApiAuthenticator.new
 
 #Allows for testing from a Chrome Extension HTTP
 set :protection, :origin_whitelist => ['chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo']
-
-get '/' do
-  	@username = 'test'
-	@password = 'test'
-
-	User.create(
-		username: @username,
-		password: @password
-	)
-end
 
 post '/user' do
 	@username = params[:username]
@@ -50,12 +44,21 @@ post '/authenticate' do
 	user = User.where(username: @username).first
 
 	if user.password == @password
-		auth.createKey()
+		key = auth.createKey()
+		payload = [key]
+		return payload.to_json
 	else
 		"Whomp whomp."
 	end
 end
 
+get '/validkey' do
+	if auth.isKeyValid
+		'Valid'
+	else
+		'Invalid'
+	end
+end
 
 class Key
 	include Mongoid::Document
