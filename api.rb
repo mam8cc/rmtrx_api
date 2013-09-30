@@ -39,7 +39,7 @@ end
 
 post '/authenticate' do
 
-	params.inspect
+	params.inspect.to_json
 
 	# @username = params[:username]
 	# @password = params[:password]
