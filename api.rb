@@ -41,6 +41,9 @@ post '/authenticate' do
 	@username = params[:username]
 	@password = params[:password]
 
+	puts @username
+	puts @password
+
 	user = User.where(username: @username).first
 
 	if user.password == @password
