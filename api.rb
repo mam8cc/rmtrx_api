@@ -38,21 +38,18 @@ post '/user' do
 end
 
 post '/authenticate' do
+	@username = params[:username]
+	@password = params[:password]
 
-	params.inspect.to_json
+	user = User.where(username: @username).first
 
-	# @username = params[:username]
-	# @password = params[:password]
-
-	# user = User.where(username: @username).first
-
-	# if user.password == @password
-	# 	key = auth.createKey()
-	# 	payload = [key]
-	# 	return payload.to_json
-	# else
-	# 	"Whomp whomp."
-	# end
+	if user.password == @password
+		key = auth.createKey()
+		payload = [key]
+		return payload.to_json
+	else
+		"Whomp whomp."
+	end
 end
 
 get '/validkey' do
