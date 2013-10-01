@@ -25,6 +25,10 @@ auth = ApiAuthenticator.new
 #Allows for testing from a Chrome Extension HTTP
 set :protection, :origin_whitelist => ['chrome-extension://hgmloofddffdnphfgcellkdfbfbjeloo']
 
+before do
+    content_type 'application/json'
+end
+
 post '/user' do
 	@username = params[:username]
 	@password = params[:password]
@@ -46,7 +50,7 @@ post '/authenticate' do
 	if user.password == @password
 		key = auth.createKey()
 		payload = {"response" => key}
-		return payload.to_json
+		return payload.to_json.to_s
 	else
 		"Whomp whomp."
 	end
