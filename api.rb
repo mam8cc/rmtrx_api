@@ -45,7 +45,7 @@ post '/authenticate' do
 
 	if user.password == @password
 		key = auth.createKey()
-		payload = [key]
+		payload = {"response" => key}
 		return payload.to_json
 	else
 		"Whomp whomp."
