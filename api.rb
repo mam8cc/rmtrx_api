@@ -55,8 +55,8 @@ post '/authenticate' do
 	end
 end
 
-get '/validkey' do
-	if auth.isKeyValid
+get '/validkey/:key' do
+	if auth.isKeyValid(params[:key])
 		'Valid'
 	else
 		'Invalid'
