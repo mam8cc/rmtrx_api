@@ -49,7 +49,7 @@ post '/authenticate' do
 
 	if user.password == @password
 		key = auth.createKey()
-		return key.to_json.to_s
+		return key.to_json
 	else
 		"Whomp whomp."
 	end
