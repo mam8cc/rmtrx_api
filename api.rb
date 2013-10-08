@@ -27,6 +27,12 @@ set :protection, :origin_whitelist => ['chrome-extension://hgmloofddffdnphfgcell
 
 before do
     content_type 'application/json'
+
+   #  if auth.isKeyValid(params[:key])
+		 # return Key.where(key: key).exists?
+   #  else
+   #  	error 401
+   #  end
 end
 
 post '/user' do
@@ -63,13 +69,64 @@ get '/validkey/:key' do
 	end
 end
 
+get '/create' do
+	residence = Residence.create(
+		
+	)
+end
+
+get '/api' do
+
+end
+
 class Key
 	include Mongoid::Document
+
 	field :key, type: String
 end	
 
 class User 
 	include Mongoid::Document
+
+	field :userId, type: Integer
 	field :username, type: String
 	field :password, type: String
+	field :firstName, type: String
+	field :lastName, type: String
+	field :email, type: String
+
+	embedded_in :residence
 end
+
+class Residence
+	include Mongoid::Document
+
+	field :residenceId, type: Integer
+	field :name, type: String
+	field :address, type: String
+
+	embeds_many :users
+	embeds_many :groceryLists
+	embeds_many :events
+end
+
+class GroceryList
+	include Mongoid::Document
+
+	field :itemName, type: String
+	field :itemDescription, type: String
+
+	embedded_in :residence
+end
+
+class Event
+	include Mongoid::Document
+
+	field :eventName, type: String
+	field :eventLocation, type: String
+	field :eventDetails, type: String
+	field :eventDate, type: DateTime
+
+	embedded_in :residence
+end
+
