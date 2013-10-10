@@ -44,7 +44,7 @@ post '/user' do
 		password: @password
 	)
 
-	auth.createKey()
+	auth.createKey().to_json
 end
 
 post '/authenticate' do
@@ -95,7 +95,6 @@ class User
 	field :lastName, type: String
 	field :email, type: String
 
-	embedded_in :residence
 end
 
 class Residence
@@ -108,6 +107,14 @@ class Residence
 	embeds_many :users
 	embeds_many :groceryLists
 	embeds_many :events
+end
+
+class Member
+	include Mongoid::Document
+
+	field :userId, type: Integer
+
+	embedded_in :residence
 end
 
 class GroceryList
