@@ -36,7 +36,7 @@ before do
 end
 
 post '/user' do
-	@email = params[:emails]
+	@email = params[:email]
 	@firstName = params[:first_name]
 	@lastName = params[:last_name]
 	@password = params[:password]
