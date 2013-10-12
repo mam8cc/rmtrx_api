@@ -52,10 +52,10 @@ post '/user' do
 end
 
 post '/authenticate' do
-	@username = params[:username]
+	@email = params[:email]
 	@password = params[:password]
 
-	user = User.where(username: @username).first
+	user = User.where(email: @email).first
 
 	if user.password == @password
 		key = auth.createKey()
