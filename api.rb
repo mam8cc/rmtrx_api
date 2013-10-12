@@ -42,7 +42,7 @@ post '/user' do
 	@password = params[:password]
 
 	user = User.create(
-		email: @username,
+		email: @email,
 		password: @password,
 		firstName: @firstName,
 		lastName: @lastName
