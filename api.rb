@@ -36,15 +36,19 @@ before do
 end
 
 post '/user' do
-	@username = params[:username]
+	@email = params[:emails]
+	@firstName = params[:first_name]
+	@lastName = params[:last_name]
 	@password = params[:password]
 
-	User.create(
-		username: @username,
-		password: @password
+	user = User.create(
+		email: @username,
+		password: @password,
+		firstName: @firstName,
+		lastName: @lastName
 	)
 
-	auth.createKey().to_json
+	return {"user" => user, "key" => auth.createKey()}.to_json
 end
 
 post '/authenticate' do
@@ -89,11 +93,10 @@ class User
 	include Mongoid::Document
 
 	field :userId, type: Integer
-	field :username, type: String
+	field :email, type: String
 	field :password, type: String
 	field :firstName, type: String
 	field :lastName, type: String
-	field :email, type: String
 
 end
 
