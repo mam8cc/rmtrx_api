@@ -51,36 +51,61 @@ post '/user' do
 	return {"user" => user, "key" => auth.createKey()}.to_json
 end
 
+post '/residence' do
+	@name = params[:name]
+	@userId = params[:userId]
+
+	users = Array.new
+	users.push(@userId)
+
+	puts users.inspect
+
+	residence = Residence.create(
+		name: @name,
+		users: users
+	)
+
+	return {"residence" => residence}.to_json
+end
+
+post '/code' do
+	@residenceId = params[:residence_id]
+	@code = params[:code]
+
+	code = ResidenceCode.create(
+		code: @code,
+		residenceId: @residenceId
+	)
+
+	return {"code" => code}
+end
+
+post '/join' do
+	@code = params[:code]
+	@userId = params[:user_id]
+
+	code = ResidenceCode.where(code: @code).first
+	residence = Residence.where(_id: code.residenceId).first
+
+	residence.users.push(@userId)
+
+	return {"residence" => residence}.to_json
+end
+
 post '/authenticate' do
 	@email = params[:email]
 	@password = params[:password]
 
 	user = User.where(email: @email).first
 
-	if user.password == @password
-		key = auth.createKey()
-		return key.to_json
-	else
-		"Whomp whomp."
+	if user != nil 
+		if user.password == @password
+			key = auth.createKey()
+			return key.to_json
+		else
+			"Whomp whomp."
+		end
 	end
-end
-
-get '/validkey/:key' do
-	if auth.isKeyValid(params[:key])
-		'Valid'
-	else
-		'Invalid'
-	end
-end
-
-get '/create' do
-	residence = Residence.create(
-		
-	)
-end
-
-get '/api' do
-
 end
 
 class Key
@@ -92,22 +117,25 @@ end
 class User 
 	include Mongoid::Document
 
-	field :userId, type: Integer
 	field :email, type: String
 	field :password, type: String
 	field :firstName, type: String
 	field :lastName, type: String
+end
 
+class ResidenceCode
+	include Mongoid::Document
+
+	field :code, type: String
+	field :residenceId, type: String
 end
 
 class Residence
 	include Mongoid::Document
 
-	field :residenceId, type: Integer
 	field :name, type: String
-	field :address, type: String
+	field :users, type: Array
 
-	embeds_many :users
 	embeds_many :groceryLists
 	embeds_many :events
 end
