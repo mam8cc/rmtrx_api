@@ -77,7 +77,7 @@ post '/code' do
 		residenceId: @residenceId
 	)
 
-	return {"code" => code}
+	return {"code" => code}.to_json
 end
 
 post '/join' do
@@ -106,6 +106,10 @@ post '/authenticate' do
 			"Whomp whomp."
 		end
 	end
+end
+
+get '/api' do
+	
 end
 
 class Key
