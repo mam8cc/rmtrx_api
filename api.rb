@@ -103,8 +103,10 @@ post '/authenticate' do
 			key = auth.createKey()
 			return key.to_json
 		else
-			"Whomp whomp."
+			error 401
 		end
+	else
+		error 401
 	end
 end
 
