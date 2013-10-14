@@ -68,6 +68,18 @@ post '/residence' do
 	return {"residence" => residence}.to_json
 end
 
+get '/residence/:id' do
+	@residenceId = params[:id]
+
+	residence = Residence.where(_id: @residenceId).first
+
+	if residence == nil
+		error 404
+	else
+		return {"residence" => residence}.to_json
+	end
+end
+
 post '/code' do
 	@residenceId = params[:residence_id]
 	@code = params[:code]
