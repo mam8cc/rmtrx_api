@@ -53,7 +53,7 @@ end
 
 post '/residence' do
 	@name = params[:name]
-	@userId = params[:userId]
+	@userId = params[:user_id]
 
 	users = Array.new
 	users.push(@userId)
