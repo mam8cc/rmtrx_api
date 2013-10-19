@@ -27,9 +27,9 @@ post '/user' do
 	@lastName = params[:last_name]
 	@password = params[:password]
 
-	existingUser = User.where(email: @email)
+	existingUser = User.where(email: @email).first
 
-	if(existingUser == nil)
+	if(existingUser != nil)
 		error 406
 	else
 		user = User.create(
