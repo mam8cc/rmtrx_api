@@ -1,18 +1,16 @@
-require 'mongoid'
-
 class ApiAuthenticator
-	def createKey  do
+	def createKey
 		@key = SecureRandom.uuid;
 
-		Kyes.create(
+		keyObject = Key.create(
 			key: @key
 		)
 
-		return @key
+		return keyObject
+	end
+
+	def isKeyValid(key)
+		 return Key.where(key: key).exists?
 	end
 end
 
-class Keys
-	include Mongoid::Document
-	field :key, type: String
-end	

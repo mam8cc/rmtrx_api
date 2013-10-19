@@ -1,24 +1,10 @@
 require 'sinatra'
 require 'mongoid'
 require 'json'
+require "./api_auth.rb"
+require "./models.rb"
 
 Mongoid.load!("mongoid.yml")
-
-class ApiAuthenticator
-	def createKey
-		@key = SecureRandom.uuid;
-
-		keyObject = Key.create(
-			key: @key
-		)
-
-		return keyObject
-	end
-
-	def isKeyValid(key)
-		 return Key.where(key: key).exists?
-	end
-end
 
 auth = ApiAuthenticator.new
 
@@ -41,14 +27,20 @@ post '/user' do
 	@lastName = params[:last_name]
 	@password = params[:password]
 
-	user = User.create(
-		email: @email,
-		password: @password,
-		firstName: @firstName,
-		lastName: @lastName
-	)
+	existingUser = User.where(email: @email)
 
-	return {"user" => user, "key" => auth.createKey()}.to_json
+	if(existingUser != nil)
+		error 406
+	else
+		user = User.create(
+			email: @email,
+			password: @password,
+			firstName: @firstName,
+			lastName: @lastName
+		)
+
+		return {"user" => user, "key" => auth.createKey()}.to_json
+	end
 end
 
 post '/residence' do
@@ -65,7 +57,7 @@ post '/residence' do
 		users: users
 	)
 
-	return {"residence" => residence}.to_json
+	return residence.to_json
 end
 
 get '/residence/:id' do
@@ -120,69 +112,5 @@ post '/authenticate' do
 	else
 		error 401
 	end
-end
-
-get '/api' do
-	
-end
-
-class Key
-	include Mongoid::Document
-
-	field :key, type: String
-end	
-
-class User 
-	include Mongoid::Document
-
-	field :email, type: String
-	field :password, type: String
-	field :firstName, type: String
-	field :lastName, type: String
-end
-
-class ResidenceCode
-	include Mongoid::Document
-
-	field :code, type: String
-	field :residenceId, type: String
-end
-
-class Residence
-	include Mongoid::Document
-
-	field :name, type: String
-	field :users, type: Array
-
-	embeds_many :groceryLists
-	embeds_many :events
-end
-
-class Member
-	include Mongoid::Document
-
-	field :userId, type: Integer
-
-	embedded_in :residence
-end
-
-class GroceryList
-	include Mongoid::Document
-
-	field :itemName, type: String
-	field :itemDescription, type: String
-
-	embedded_in :residence
-end
-
-class Event
-	include Mongoid::Document
-
-	field :eventName, type: String
-	field :eventLocation, type: String
-	field :eventDetails, type: String
-	field :eventDate, type: DateTime
-
-	embedded_in :residence
 end
 
