@@ -68,7 +68,7 @@ get '/residence/:id' do
 	if residence == nil
 		error 404
 	else
-		return {"residence" => residence}.to_json
+		return residence.to_json
 	end
 end
 
@@ -81,7 +81,7 @@ post '/code' do
 		residenceId: @residenceId
 	)
 
-	return {"code" => code}.to_json
+	return code.to_json
 end
 
 post '/join' do
