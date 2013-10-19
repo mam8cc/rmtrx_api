@@ -1,8 +1,8 @@
 require 'sinatra'
 require 'mongoid'
 require 'json'
-require "./api_auth.rb"
 require "./models.rb"
+require "./api_auth.rb"
 
 Mongoid.load!("mongoid.yml")
 

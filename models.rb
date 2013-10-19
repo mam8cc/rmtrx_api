@@ -52,7 +52,7 @@ class Event
 	embedded_in :residence
 end
 
-class Keys
+class Key
 	include Mongoid::Document
 	field :key, type: String
 end	
