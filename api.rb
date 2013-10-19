@@ -105,7 +105,7 @@ post '/authenticate' do
 	if user != nil 
 		if user.password == @password
 			key = auth.createKey()
-			return key.to_json
+			return {"user" => user, "key" => auth.createKey()}.to_json
 		else
 			error 401
 		end
