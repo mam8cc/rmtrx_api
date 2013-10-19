@@ -93,7 +93,7 @@ post '/join' do
 
 	residence.users.push(@userId)
 
-	return {"residence" => residence}.to_json
+	return residence.to_json
 end
 
 post '/authenticate' do
