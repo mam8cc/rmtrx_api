@@ -29,7 +29,7 @@ post '/user' do
 
 	existingUser = User.where(email: @email)
 
-	if(existingUser != nil)
+	if(existingUser == nil)
 		error 406
 	else
 		user = User.create(
