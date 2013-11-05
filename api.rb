@@ -56,11 +56,10 @@ post '/residence' do
 	users = Array.new
 	users.push(@userId)
 
-	puts users.inspect
-
 	residence = Residence.create(
 		name: @name,
-		users: users
+		users: users,
+		updateTime: DateTime.now
 	)
 
 	return residence.to_json
@@ -81,7 +80,14 @@ end
 #this is gross, but its get residence by userId
 get '/residence/user/:id' do
 	@userId = params[:id]
-	
+
+	residence = Residence.any_in(users: @userId)
+
+	if(residence[0] != nil)
+		return residence[0].to_json
+	else
+		return 404
+	end
 end
 
 post '/code' do

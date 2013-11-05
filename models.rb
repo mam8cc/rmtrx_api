@@ -19,7 +19,7 @@ class Residence
 
 	field :name, type: String
 	field :users, type: Array
-	field :updateTIme, type: 
+	field :updateTime, type: DateTime
 
 	embeds_many :groceryLists
 	embeds_many :events
