@@ -21,6 +21,12 @@ before do
    #  end
 end
 
+get '/user/:id' do
+	@id = params[:id]
+
+	return rUser.where(id: @id).first.to_json
+end
+
 post '/user' do
 	@email = params[:email]
 	@firstName = params[:first_name]
@@ -29,7 +35,7 @@ post '/user' do
 
 	existingUser = User.where(email: @email).first
 
-	if(existingUser != nil)
+	if existingUser != nil
 		error 406
 	else
 		user = User.create(
@@ -72,6 +78,12 @@ get '/residence/:id' do
 	end
 end
 
+#this is gross, but its get residence by userId
+get '/residence/user/:id' do
+	@userId = params[:id]
+	
+end
+
 post '/code' do
 	@residenceId = params[:residence_id]
 	@code = params[:code]
@@ -112,5 +124,45 @@ post '/authenticate' do
 	else
 		error 401
 	end
+end
+
+post '/list' do
+	@residenceId = params[:residence_id]
+	@listName = params[:list_name]
+
+	residence = Residence.where(_id: @residenceId).first
+	residence.groceryLists.create(
+		listName: @listName
+	)
+
+	return residence.to_json
+end
+
+post '/list/item' do
+	@residenceId = params[:residence_id]
+	@listId = params[:list_id]
+	@itemName = params[:item_name]
+
+	residence = Residence.where(_id: @residenceId).first
+	list = residence.groceryLists.where(_id: @listId).first
+
+	list.groceryListItems.create(
+		itemName: @itemName,
+		itemStatus: false
+	)
+
+	return residence.to_json
+end
+
+put 'list/item' do
+	@residenceId = params[:residence_id]
+	@listId = params[:list_id]
+	@itemId = params[:item_id]
+
+	residence = Residence.where(_id: @residenceId).first
+	list = residence.groceryLists.where(_id: @listId).first
+	listItem = list.GroceryListItems.where(_id: @itemId)
+
+	
 end
 

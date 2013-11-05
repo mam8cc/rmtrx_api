@@ -19,26 +19,29 @@ class Residence
 
 	field :name, type: String
 	field :users, type: Array
+	field :updateTIme, type: 
 
 	embeds_many :groceryLists
 	embeds_many :events
 end
 
-class Member
+class GroceryList
 	include Mongoid::Document
 
-	field :userId, type: Integer
+	field :listName, type: String
+
+	embeds_many :groceryListItems
 
 	embedded_in :residence
 end
 
-class GroceryList
+class GroceryListItem
 	include Mongoid::Document
 
 	field :itemName, type: String
-	field :itemDescription, type: String
+	field :itemStatus, type: Boolean
 
-	embedded_in :residence
+	embedded_in :groceryList
 end
 
 class Event
