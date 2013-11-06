@@ -77,6 +77,18 @@ get '/residence/:id' do
 	end
 end
 
+get '/user/:id' do
+	@userId = params[:user_id]
+
+	user = User.where(_id: @userId).first
+
+	if user == nil
+		error 404
+	else
+		user.to_json
+	end
+end
+
 #this is gross, but its get residence by userId
 get '/residence/user/:id' do
 	@userId = params[:id]
