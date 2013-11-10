@@ -226,12 +226,11 @@ get '/residence/:id/chatlog' do
 	chatLog = ChatLog.where(residenceId: @residenceId).first 
 
 	messages = chatLog.messages
+	return messages.to_json
 	# length = messages.length
 	# bound = length - 25
 
-	# limitedMessages = messages.reject{|i| i < bound}
-
-	return messages.to_json
+	# limitedMessages = messages.reject{|i| i < bound}return {"messages.to_json" => messages, "chatLog" => chatLog}.to_json
 	# if chatLog != nil
 	# 	return chatLog.to_json
 	# else
