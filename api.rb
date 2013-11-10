@@ -219,3 +219,23 @@ post '/message' do
 
 	return chatLog.to_json
 end
+
+get '/residence/:id/chatlog' do
+	@residenceId = params[:id]
+
+	chatLog = ChatLog.where(residenceId: @residenceId).first 
+
+	messages = chatLog.messages
+	# length = messages.length
+	# bound = length - 25
+
+	# limitedMessages = messages.reject{|i| i < bound}
+
+	return messages.to_json
+	# if chatLog != nil
+	# 	return chatLog.to_json
+	# else
+	# 	error 404
+	# end
+end
+
