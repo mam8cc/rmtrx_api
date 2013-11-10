@@ -62,6 +62,10 @@ post '/residence' do
 		updateTime: DateTime.now
 	)
 
+	chatLog = ChatLog.create(
+		residenceId: residence._id
+	)
+
 	return residence.to_json
 end
 
@@ -180,7 +184,38 @@ put 'list/item' do
 	residence = Residence.where(_id: @residenceId).first
 	list = residence.groceryLists.where(_id: @listId).first
 	listItem = list.GroceryListItems.where(_id: @itemId)
-
+	@residenceId = params[:residence_id]
+	@listId = params[:list_id]
+	@itemId = params[:list_item_id]
+	@itemName = params[:list_item_name]
+	@itemStatus = params[:list_item_status]
 	
+	residence = Residence.where(_id: @residenceId).first
+	list = residence.groceryLists.where(_id: @listId).first
+	item = list.groceryListItems.where(_id: @itemId).first
+
+	if item != nil
+		#TODO: 
+		item.Name = @itemName
+		item.itemStatus = @itemStatus
+
+		return residence.to_json
+	else
+		return 404
+	end
 end
 
+post '/message' do
+	@residenceId = params[:residence_id]
+	@userId = params[:user_id]
+	@message = params[:message]
+
+	chatLog = ChatLog.where(residenceId: @residenceId).first
+	chatLog.messages.create(
+		senderId: @userId,
+		message: @message,
+		dateSent: DateTime.now
+	)
+
+	return chatLog.to_json
+end

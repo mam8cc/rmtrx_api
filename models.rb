@@ -23,6 +23,7 @@ class Residence
 
 	embeds_many :groceryLists
 	embeds_many :events
+	embeds_many :messages
 end
 
 class GroceryList
@@ -59,3 +60,20 @@ class Key
 	include Mongoid::Document
 	field :key, type: String
 end	
+
+class ChatLog
+	include Mongoid::Document
+
+	field :residenceId, type: String
+
+	embeds_many :messages
+end
+
+class Message
+	include Mongoid::Document
+	field :message, type: String
+	field :senderId, type: String
+	field :dateSent, type: DateTime
+
+	embedded_in :chat
+end
