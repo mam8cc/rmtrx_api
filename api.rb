@@ -211,13 +211,13 @@ post '/message' do
 	@message = params[:message]
 
 	chatLog = ChatLog.where(residenceId: @residenceId).first
-	chatLog.messages.create(
+	message = chatLog.messages.create(
 		senderId: @userId,
 		message: @message,
 		dateSent: DateTime.now
 	)
 
-	return chatLog.to_json
+	return message.to_json
 end
 
 get '/residence/:id/chatlog' do
