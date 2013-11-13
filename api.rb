@@ -135,16 +135,17 @@ post '/authenticate' do
 	@password = params[:password]
 
 	user = User.where(email: @email).first
+	@userId = user._id.to_s
+	residence = Residence.any_in(users: @userId)
 
-	if user != nil 
-		if user.password == @password
-			key = auth.createKey()
-			return {"user" => user, "key" => auth.createKey()}.to_json
+	if user == nil
+		error 404
+	else	
+		if residence[0] == nil
+			return {"user_id" => user._id, "user" => user, "residence" => nil, "key" => auth.createKey()}.to_json
 		else
-			error 401
+			return {"user_id" => user._id, "user" => user, "residence" => residence[0], "key" => auth.createKey()}.to_json
 		end
-	else
-		error 401
 	end
 end
 
