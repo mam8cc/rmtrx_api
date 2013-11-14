@@ -24,7 +24,7 @@ end
 get '/user/:id' do
 	@id = params[:id]
 
-	return rUser.where(id: @id).first.to_json
+	return User.where(id: @id).first.to_json
 end
 
 post '/user' do
@@ -40,9 +40,13 @@ post '/user' do
 	else
 		user = User.create(
 			email: @email,
-			password: @password,
 			firstName: @firstName,
 			lastName: @lastName
+		)
+
+		Password.create(
+			userId: user._id,
+			password: @password
 		)
 
 		return {"user" => user, "key" => auth.createKey()}.to_json
@@ -53,8 +57,10 @@ post '/residence' do
 	@name = params[:name]
 	@userId = params[:user_id]
 
+	user = User.where(_id: @userId).first
+
 	users = Array.new
-	users.push(@userId)
+	users.push(user)
 
 	residence = Residence.create(
 		name: @name,
@@ -135,16 +141,15 @@ post '/authenticate' do
 	@password = params[:password]
 
 	user = User.where(email: @email).first
-	@userId = user._id.to_s
-	residence = Residence.any_in(users: @userId)
+	residence = Residence.where('users._id' => user._id).first
 
 	if user == nil
 		error 404
 	else	
-		if residence[0] == nil
+		if residence == nil
 			return {"user_id" => user._id, "user" => user, "residence" => nil, "key" => auth.createKey()}.to_json
 		else
-			return {"user_id" => user._id, "user" => user, "residence" => residence[0], "key" => auth.createKey()}.to_json
+			return {"user_id" => user._id, "user" => user, "residence" => residence, "key" => auth.createKey()}.to_json
 		end
 	end
 end

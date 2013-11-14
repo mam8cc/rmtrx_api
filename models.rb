@@ -2,9 +2,17 @@ class User
 	include Mongoid::Document
 
 	field :email, type: String
-	field :password, type: String
 	field :firstName, type: String
 	field :lastName, type: String
+
+	embedded_in :residence
+end
+
+class Password
+	include Mongoid::Document
+
+	field :userId, type: String
+	field :password, type: String
 end
 
 class ResidenceCode
@@ -18,12 +26,12 @@ class Residence
 	include Mongoid::Document
 
 	field :name, type: String
-	field :users, type: Array
 	field :updateTime, type: DateTime
 
 	embeds_many :groceryLists
 	embeds_many :events
 	embeds_many :messages
+	embeds_many :users
 end
 
 class GroceryList
