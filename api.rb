@@ -27,18 +27,28 @@ get '/user/:id' do
 	return User.where(id: @id).first.to_json
 end
 
-post '/user' do
+post '/account' do
 	@email = params[:email]
 	@firstName = params[:first_name]
 	@lastName = params[:last_name]
 	@password = params[:password]
+	@residenceName = params[:residence_name]
 
 	existingUser = User.where(email: @email).first
 
 	if existingUser != nil
 		error 406
 	else
-		user = User.create(
+		residence = Residence.create(
+			name: @residenceName,
+			updateTime: DateTime.now
+		)
+
+		chatLog = ChatLog.create(
+			residenceId: residence._id
+		)
+
+		user = residence.users.create(
 			email: @email,
 			firstName: @firstName,
 			lastName: @lastName
@@ -49,7 +59,7 @@ post '/user' do
 			password: @password
 		)
 
-		return {"user" => user, "key" => auth.createKey()}.to_json
+		return {"user" => user, "residence" => residence, "key" => auth.createKey()}.to_json
 	end
 end
 
