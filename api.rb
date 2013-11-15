@@ -129,10 +129,10 @@ post '/join' do
 	@password = params[:password]
 
 	code = ResidenceCode.where(code: @code).first
+
 	if code == nil
 		error 404
 	else
-
 		residence = Residence.where(_id: code.residenceId).first
 
 		user = residence.users.create(
@@ -154,17 +154,17 @@ post '/authenticate' do
 	@email = params[:email]
 	@password = params[:password]
 
-	user = User.where(email: @email).first
+	residence = Residence.where('users.email' => @email).first
 
-	if user == nil
+	if residence == nil
 		error 404
 	else	
-		residence = Residence.where('users._id' => user._id).first
+		user = residence.users.where(email: @email).first
 
-		if residence == nil
+		if user == nil
 			error 404
 		else
-			return {"user_id" => user._id, "user" => user, "residence" => residence, "key" => auth.createKey()}.to_json
+			return {"user" => user, "residence" => residence, "key" => auth.createKey()}.to_json
 		end
 	end
 end
