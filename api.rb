@@ -155,13 +155,14 @@ post '/authenticate' do
 	@password = params[:password]
 
 	user = User.where(email: @email).first
-	residence = Residence.where('users._id' => user._id).first
 
 	if user == nil
 		error 404
 	else	
+		residence = Residence.where('users._id' => user._id).first
+
 		if residence == nil
-			return {"user_id" => user._id, "user" => user, "residence" => nil, "key" => auth.createKey()}.to_json
+			error 404
 		else
 			return {"user_id" => user._id, "user" => user, "residence" => residence, "key" => auth.createKey()}.to_json
 		end
