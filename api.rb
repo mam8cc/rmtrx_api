@@ -146,7 +146,7 @@ post '/join' do
 				password: @password
 			)
 
-		return {'user' => user, "residence" => residence}.to_json
+		return {'user' => user, "residence" => residence, "key" => auth.createKey()}.to_json
 	end
 end
 
