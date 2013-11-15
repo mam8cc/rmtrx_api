@@ -109,19 +109,6 @@ get '/user/:id' do
 	end
 end
 
-#this is gross, but its get residence by userId
-get '/residence/user/:id' do
-	@userId = params[:id]
-
-	residence = Residence.any_in(users: @userId)
-
-	if(residence[0] != nil)
-		return residence[0].to_json
-	else
-		return 404
-	end
-end
-
 post '/code' do
 	@residenceId = params[:residence_id]
 	@code = params[:code]
@@ -136,14 +123,31 @@ end
 
 post '/join' do
 	@code = params[:code]
-	@userId = params[:user_id]
+	@email = params[:email]
+	@firstName = params[:first_name]
+	@lastName = params[:last_name]
+	@password = params[:password]
 
 	code = ResidenceCode.where(code: @code).first
-	residence = Residence.where(_id: code.residenceId).first
+	if code == nil
+		error 404
+	else
 
-	residence.users.push(@userId)
+		residence = Residence.where(_id: code.residenceId).first
 
-	return residence.to_json
+		user = residence.users.create(
+				email: @email,
+				firstName: @firstName,
+				lastName: @lastName
+			)
+
+		Password.create(
+				userId: user._id,
+				password: @password
+			)
+
+		return {'user' => user, "residence" => residence}.to_json
+	end
 end
 
 post '/authenticate' do
