@@ -197,7 +197,7 @@ post '/list/item' do
 	return list.to_json
 end
 
-put 'list/item' do
+put '/list/item' do
 	@residenceId = params[:residence_id]
 	@listId = params[:list_id]
 	@itemId = params[:item_id]
@@ -209,8 +209,6 @@ put 'list/item' do
 	item = list.groceryListItems.where(_id: @itemId).first
 
 	if item != nil
-		#TODO: 
-		item.Name = @itemName
 		item.itemStatus = @itemStatus
 
 		return residence.to_json
