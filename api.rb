@@ -189,12 +189,12 @@ post '/list/item' do
 	residence = Residence.where(_id: @residenceId).first
 	list = residence.groceryLists.where(_id: @listId).first
 
-	list.groceryListItems.create(
+	item = list.groceryListItems.create(
 		itemName: @itemName,
 		itemStatus: false
 	)
 
-	return list.to_json
+	return item.to_json
 end
 
 put '/list/item' do
