@@ -174,11 +174,11 @@ post '/list' do
 	@listName = params[:list_name]
 
 	residence = Residence.where(_id: @residenceId).first
-	residence.groceryLists.create(
+	list = residence.groceryLists.create(
 		listName: @listName
 	)
 
-	return residence.to_json
+	return list.to_json
 end
 
 post '/list/item' do
@@ -194,24 +194,17 @@ post '/list/item' do
 		itemStatus: false
 	)
 
-	return residence.to_json
+	return list.to_json
 end
 
 put 'list/item' do
 	@residenceId = params[:residence_id]
 	@listId = params[:list_id]
 	@itemId = params[:item_id]
-
-	residence = Residence.where(_id: @residenceId).first
-	list = residence.groceryLists.where(_id: @listId).first
-	listItem = list.GroceryListItems.where(_id: @itemId)
-	@residenceId = params[:residence_id]
-	@listId = params[:list_id]
-	@itemId = params[:list_item_id]
-	@itemName = params[:list_item_name]
-	@itemStatus = params[:list_item_status]
+	@itemStatus = params[:item_status]
 	
 	residence = Residence.where(_id: @residenceId).first
+	residence.to_json
 	list = residence.groceryLists.where(_id: @listId).first
 	item = list.groceryListItems.where(_id: @itemId).first
 
