@@ -220,7 +220,7 @@ put '/list/item' do
 	if item != nil
 		item.itemStatus = @itemStatus
 
-		return residence.to_json
+		return item.to_json
 	else
 		return 404
 	end
@@ -258,16 +258,15 @@ get '/residence/:id/chatlog' do
 
 	chatLog = ChatLog.where(residenceId: @residenceId).first 
 
-	messages = chatLog.messages
-	return messages.to_json
-	# length = messages.length
-	# bound = length - 25
+	messages = chatLog.messages.to_a
+	length = messages.length
+	bound = length - 25
 
-	# limitedMessages = messages.reject{|i| i < bound}return {"messages.to_json" => messages, "chatLog" => chatLog}.to_json
-	# if chatLog != nil
-	# 	return chatLog.to_json
-	# else
-	# 	error 404
-	# end
+	limitedMessages = messages.reject{|i| i < bound}
+	if limitedMessages != nil
+		return chatLog.to_json
+	else
+		error 404
+	end
 end
 
