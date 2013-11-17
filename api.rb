@@ -219,7 +219,7 @@ put '/list/item' do
 
 	if item != nil
 		item.itemStatus = @itemStatus
-
+		item.save!
 		return item.to_json
 	else
 		return 404
