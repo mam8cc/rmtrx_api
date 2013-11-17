@@ -181,6 +181,16 @@ post '/list' do
 	return list.to_json
 end
 
+delete '/list' do
+	@residenceId = params[:residence_id]
+	@listId = params[:list_id]
+	
+	residence = Residence.where(_id: @residenceId).first
+	list = residence.groceryLists.where(_id: @listId).first
+
+	list.delete
+end
+
 post '/list/item' do
 	@residenceId = params[:residence_id]
 	@listId = params[:list_id]
@@ -204,7 +214,6 @@ put '/list/item' do
 	@itemStatus = params[:item_status]
 	
 	residence = Residence.where(_id: @residenceId).first
-	residence.to_json
 	list = residence.groceryLists.where(_id: @listId).first
 	item = list.groceryListItems.where(_id: @itemId).first
 
@@ -215,6 +224,18 @@ put '/list/item' do
 	else
 		return 404
 	end
+end
+
+delete '/list/item' do
+	@residenceId = params[:residence_id]
+	@listId = params[:list_id]
+	@itemId = params[:item_id]
+
+	residence = Residence.where(_id: @residenceId).first
+	list = residence.groceryLists.where(_id: @listId).first
+	item = list.groceryListItems.where(_id: @itemId).first
+
+	item.delete
 end
 
 post '/message' do
