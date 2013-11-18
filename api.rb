@@ -181,7 +181,7 @@ post '/list' do
 	return list.to_json
 end
 
-delete '/list' do
+delete '/residence/:residence_id/list/:list_id' do
 	@residenceId = params[:residence_id]
 	@listId = params[:list_id]
 	
