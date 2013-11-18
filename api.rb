@@ -226,7 +226,7 @@ put '/list/item' do
 	end
 end
 
-delete '/list/item' do
+delete '/residence/:residence_id/list/:list_id/item/:item_id' do
 	@residenceId = params[:residence_id]
 	@listId = params[:list_id]
 	@itemId = params[:item_id]
