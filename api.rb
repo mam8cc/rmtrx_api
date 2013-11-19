@@ -44,7 +44,7 @@ post '/account' do
 			updateTime: DateTime.now
 		)
 
-		residence.groceryListLastUpdate = DateTime.now
+		residence.groceryListLastUpdate = DateTime.now.to_time.to_i
 
 		chatLog = ChatLog.create(
 			residenceId: residence._id
@@ -84,7 +84,7 @@ post '/residence' do
 		residenceId: residence._id
 	)
 
-	residence.groceryListLastUpdate = DateTime.now
+	residence.groceryListLastUpdate = DateTime.now.to_time.to_i
 
 	return residence.to_json
 end
@@ -182,7 +182,7 @@ post '/list' do
 		listName: @listName
 	)
 
-	residence.groceryListLastUpdate = DateTime.now
+	residence.groceryListLastUpdate = DateTime.now.to_time.to_i
 
 	return list.to_json
 end
@@ -212,7 +212,7 @@ post '/list/item' do
 		itemStatus: false
 	)
 
-	residence.groceryListLastUpdate = DateTime.now
+	residence.groceryListLastUpdate = DateTime.now.to_time.to_i
 	return item.to_json
 end
 
@@ -230,7 +230,7 @@ put '/list/item' do
 		item.itemStatus = @itemStatus
 		item.save!
 
-		residence.groceryListLastUpdate = DateTime.now
+		residence.groceryListLastUpdate = DateTime.now.to_time.to_i
 		
 		return item.to_json
 	else
@@ -248,7 +248,7 @@ delete '/residence/:residence_id/list/:list_id/item/:item_id' do
 	item = list.groceryListItems.where(_id: @itemId).first
 
 	item.delete
-	residence.groceryListLastUpdate = DateTime.now
+	residence.groceryListLastUpdate = DateTime.now.to_time.to_i
 end
 
 post '/message' do

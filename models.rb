@@ -28,7 +28,7 @@ class Residence
 	field :name, type: String
 	field :updateTime, type: DateTime
 
-	field :groceryListLastUpdate, type: DateTime
+	field :groceryListLastUpdate, type: Integer
 
 	embeds_many :groceryLists
 	embeds_many :events
