@@ -61,6 +61,7 @@ post '/account' do
 			password: @password
 		)
 
+		residence.save!
 		return {"user" => user, "residence" => residence, "key" => auth.createKey()}.to_json
 	end
 end
