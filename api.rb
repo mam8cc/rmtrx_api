@@ -45,7 +45,7 @@ post '/account' do
 		)
 
 		residence.groceryListLastUpdate = DateTime.now.to_time.to_i
-		residence.ledgerLastUpdate = DateTIme.now.to_time.to_i
+		residence.ledgerLastUpdate = DateTime.now.to_time.to_i
 
 		chatLog = ChatLog.create(
 			residenceId: residence._id
