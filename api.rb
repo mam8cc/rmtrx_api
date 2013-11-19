@@ -86,6 +86,7 @@ post '/residence' do
 	)
 
 	residence.groceryListLastUpdate = DateTime.now.to_time.to_i
+	residence.save!
 
 	return residence.to_json
 end
@@ -202,6 +203,7 @@ post '/list' do
 	)
 
 	residence.groceryListLastUpdate = DateTime.now.to_time.to_i
+	residence.save!
 
 	return list.to_json
 end
@@ -216,6 +218,7 @@ delete '/residence/:residence_id/list/:list_id' do
 	list.delete
 
 	residence.groceryListLastUpdate = DateTime.now
+	residence.save!
 end
 
 post '/list/item' do
@@ -232,6 +235,8 @@ post '/list/item' do
 	)
 
 	residence.groceryListLastUpdate = DateTime.now.to_time.to_i
+	residence.save!
+
 	return item.to_json
 end
 
@@ -250,7 +255,8 @@ put '/list/item' do
 		item.save!
 
 		residence.groceryListLastUpdate = DateTime.now.to_time.to_i
-		
+		residence.save!
+
 		return item.to_json
 	else
 		return 404
@@ -268,6 +274,7 @@ delete '/residence/:residence_id/list/:list_id/item/:item_id' do
 
 	item.delete
 	residence.groceryListLastUpdate = DateTime.now.to_time.to_i
+	residence.save!
 end
 
 post '/message' do
