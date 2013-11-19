@@ -28,10 +28,13 @@ class Residence
 	field :name, type: String
 	field :updateTime, type: DateTime
 
+	field :groceryListLastUpdate, type: DateTime
+
 	embeds_many :groceryLists
 	embeds_many :events
 	embeds_many :messages
 	embeds_many :users
+	embeds_many :ledgers
 end
 
 class GroceryList
@@ -84,4 +87,16 @@ class Message
 	field :dateSent, type: DateTime
 
 	embedded_in :chat
+end
+
+class Ledger
+	include Mongoid::Document
+
+	field :payer, type: String
+	field :payee, type: String
+	field :amount, type: Integer
+	field :note, type: String
+	field :transactionDate, type: DateTime
+
+	embedded_in :residence
 end

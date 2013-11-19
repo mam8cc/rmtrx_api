@@ -82,6 +82,8 @@ post '/residence' do
 		residenceId: residence._id
 	)
 
+	residence.groceryListLastUpdate = DateTime.now
+
 	return residence.to_json
 end
 
@@ -178,6 +180,8 @@ post '/list' do
 		listName: @listName
 	)
 
+	residence.groceryListLastUpdate = DateTime.now
+
 	return list.to_json
 end
 
@@ -189,6 +193,8 @@ delete '/residence/:residence_id/list/:list_id' do
 	list = residence.groceryLists.where(_id: @listId).first
 
 	list.delete
+
+	residence.groceryListLastUpdate = DateTime.now
 end
 
 post '/list/item' do
@@ -204,6 +210,7 @@ post '/list/item' do
 		itemStatus: false
 	)
 
+	residence.groceryListLastUpdate = DateTime.now
 	return item.to_json
 end
 
@@ -220,6 +227,9 @@ put '/list/item' do
 	if item != nil
 		item.itemStatus = @itemStatus
 		item.save!
+
+		residence.groceryListLastUpdate = DateTime.now
+		
 		return item.to_json
 	else
 		return 404
@@ -236,6 +246,7 @@ delete '/residence/:residence_id/list/:list_id/item/:item_id' do
 	item = list.groceryListItems.where(_id: @itemId).first
 
 	item.delete
+	residence.groceryListLastUpdate = DateTime.now
 end
 
 post '/message' do
@@ -270,3 +281,7 @@ get '/residence/:id/chatlog' do
 	end
 end
 
+get '/residence/{residence_id}/ledger' do
+	@residenceId = params[:residence_id]
+
+end
