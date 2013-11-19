@@ -174,7 +174,7 @@ post '/authenticate' do
 	end
 end
 
-get '/residence/:residence_id/groceryListLastUpdate' do
+get '/residence/:residence_id/update_time' do
 	@residenceId = params[:residence_id]
 
 	residence = Residence.where(_id: @residenceId).first
