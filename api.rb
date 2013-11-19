@@ -179,7 +179,7 @@ get '/residence/:residence_id/groceryListLastUpdate' do
 
 	residence = Residence.where(_id: @residenceId).first
 
-	return {"time" => residence.groceryListLastUpdate.to_s}.to_json
+	return {"time_stamp" => residence.groceryListLastUpdate.to_s}.to_json
 end
 
 get '/residence/:residence_id/list' do
