@@ -34,7 +34,7 @@ class Residence
 	embeds_many :events
 	embeds_many :messages
 	embeds_many :users
-	embeds_many :ledgers
+	embeds_many :transactions
 end
 
 class GroceryList
@@ -89,14 +89,14 @@ class Message
 	embedded_in :chat
 end
 
-class Ledger
+class Transaction
 	include Mongoid::Document
 
 	field :payer, type: String
 	field :payee, type: String
 	field :amount, type: Integer
 	field :note, type: String
-	field :transactionDate, type: DateTime
+	field :transactionDate, type: Integer
 
 	embedded_in :residence
 end

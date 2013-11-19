@@ -313,3 +313,26 @@ get '/residence/{residence_id}/ledger' do
 	@residenceId = params[:residence_id]
 
 end
+
+post '/transaction' do
+	@residenceId = params[:residence_id]
+	@payer = params[:from_user]
+	@payee = params[:to_user]
+	@note = params[:note]
+	@amount = params[:amount]
+
+	residence = Residence.where(_id: @residenceId).first
+	transaction = residence.Transaction.create(
+		payer: @payer,
+		payee: @payee,
+		note: @note,
+		amount: @amount,
+		transactionDate: DateTime.now.to_time.to_i 
+	)
+
+	if residence != nil
+		return transaction.to_json
+	else
+		error 404
+	end
+end
