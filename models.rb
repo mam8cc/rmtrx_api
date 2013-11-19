@@ -29,6 +29,7 @@ class Residence
 	field :updateTime, type: DateTime
 
 	field :groceryListLastUpdate, type: Integer
+	field :ledgerLastUpdate, type: Integer
 
 	embeds_many :groceryLists
 	embeds_many :events

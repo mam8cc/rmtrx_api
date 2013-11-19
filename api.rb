@@ -175,7 +175,7 @@ post '/authenticate' do
 	end
 end
 
-get '/residence/:residence_id/update_time' do
+get '/residence/:residence_id/list/update_time' do
 	@residenceId = params[:residence_id]
 
 	residence = Residence.where(_id: @residenceId).first
@@ -309,9 +309,28 @@ get '/residence/:id/chatlog' do
 	end
 end
 
-get '/residence/{residence_id}/ledger' do
+get '/residence/:residence_id/ledger' do
 	@residenceId = params[:residence_id]
 
+	residence = Residence.where(_id: @residenceId).first
+
+	if residence != nil
+		return {"ledgers" => residence.transactions}.to_json
+	else
+		error 404
+	end
+end
+
+get '/residence/:residence_id/ledger/last_update' do
+	@residenceId = params[:residence_id]
+
+	residence = Residence.where(_id: @residenceId).first
+
+	if residence != nil
+		return {"time_stamp" => residence.ledgerLastUpdate}.to_json
+	else
+		error 404
+	end
 end
 
 post '/transaction' do
@@ -322,15 +341,18 @@ post '/transaction' do
 	@amount = params[:amount]
 
 	residence = Residence.where(_id: @residenceId).first
-	transaction = residence.Transaction.create(
-		payer: @payer,
-		payee: @payee,
-		note: @note,
-		amount: @amount,
-		transactionDate: DateTime.now.to_time.to_i 
-	)
-
+	
 	if residence != nil
+		transaction = residence.Transaction.create(
+			payer: @payer,
+			payee: @payee,
+			note: @note,
+			amount: @amount,
+			transactionDate: DateTime.now.to_time.to_i 
+		)
+
+		residence.ledgerLastUpdate = DateTime.now.to_time.to_i
+
 		return transaction.to_json
 	else
 		error 404
