@@ -174,6 +174,24 @@ post '/authenticate' do
 	end
 end
 
+get '/residence/:residence_id/groceryListLastUpdate' do
+	@residenceId = params[:residence_id]
+
+	residence = Residence.where(_id: @residenceId).first
+
+	return {"time" => residence.groceryListLastUpdate.to_s}.to_json
+end
+
+get '/residence/:residence_id/list' do
+	@residenceId = params[:residence_id]
+
+	residence = Residence.where(_id: @residenceId).first
+
+	lists = residence.groceryLists
+
+	return lists.to_json
+end
+
 post '/list' do
 	@residenceId = params[:residence_id]
 	@listName = params[:list_name]
