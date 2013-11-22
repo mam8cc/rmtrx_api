@@ -1,4 +1,4 @@
-require 'sinatra'
+irequire 'sinatra'
 require 'mongoid'
 require 'json'
 require "./models.rb"
@@ -298,11 +298,11 @@ get '/residence/:id/chatlog' do
 
 	chatLog = ChatLog.where(residenceId: @residenceId).first 
 
-	messages = chatLog.messages.to_a
-	length = messages.length
-	bound = length - 25
+	# messages = chatLog.messages.to_a
+	# length = messages.length
+	# bound = length - 25
 
-	limitedMessages = messages.reject{|i| i < bound}
+	# limitedMessages = messages.reject{|i| i < bound}
 	if limitedMessages != nil
 		return chatLog.to_json
 	else
