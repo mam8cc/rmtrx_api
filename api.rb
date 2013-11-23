@@ -303,7 +303,7 @@ get '/residence/:id/chatlog' do
 	# bound = length - 25
 
 	# limitedMessages = messages.reject{|i| i < bound}
-	if limitedMessages != nil
+	if chatLog != nil
 		return chatLog.to_json
 	else
 		error 404
