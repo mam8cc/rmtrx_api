@@ -298,13 +298,8 @@ get '/residence/:id/chatlog' do
 
 	chatLog = ChatLog.where(residenceId: @residenceId).first 
 
-	# messages = chatLog.messages.to_a
-	# length = messages.length
-	# bound = length - 25
-
-	# limitedMessages = messages.reject{|i| i < bound}
 	if chatLog != nil
-		return chatLog.messages.to_json
+		return chatLog.messages.limit(25).order_by(:dateSent.desc).to_json
 	else
 		error 404
 	end
