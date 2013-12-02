@@ -105,7 +105,7 @@ get '/residence/:id' do
 end
 
 get '/user/:id' do
-	@userId = params[:user_id]
+	@userId = params[:id]
 
 	user = User.where(_id: @userId).first
 
